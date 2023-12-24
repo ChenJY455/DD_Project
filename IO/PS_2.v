@@ -63,7 +63,7 @@ module PS_2(
     //             end
     //             CHECK_STOP: begin
     //                 if (ps2_data == 1) begin // 检测到停止位
-    //                     data <= shift_reg[0:7];
+    //                     data <= shift_reg[7:0];
     //                     valid <= 1;
     //                 end
     //                 state <= WAIT_START;

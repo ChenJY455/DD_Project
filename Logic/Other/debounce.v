@@ -5,7 +5,7 @@ module debounce(
     output reg pbvalid
     );
 
-    reg [0:7] pbshift;
+    reg [7:0] pbshift;
 
     always@(posedge clk) begin
         pbshift = pbshift<<1;
