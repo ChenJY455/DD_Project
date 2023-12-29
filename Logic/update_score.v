@@ -1,4 +1,5 @@
 // 刷新分数
+// 分数计算公式（与一次性消除的元素数量有关）
 
 module update_score(
     input clk,
