@@ -3,7 +3,7 @@ module check(
     input clk,
     input [3:0] score,  // 当前分数
     input [3:0] target // 目标分数
-    ouput [2:0] reg game_status // 游戏状态，具体见config.md
+    ouput [2:0] game_status // 游戏状态，具体见config.md
     );
 
 endmodule

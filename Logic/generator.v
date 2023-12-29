@@ -3,8 +3,8 @@
 module generator(
     input clk,
     input fresh, // 是否产生新棋盘
-    output [2:0]reg new_board[0:7][0:7]; // 新棋盘
-    output reg generated // 是否产生了新棋盘
+    output reg [2:0] new_board[0:7][0:7]; // 新棋盘
+    output if_generated // 是否产生了新棋盘
     );
 
     initial begin
@@ -20,7 +20,7 @@ module generator(
                     new_board[i][j] <= {$random(seed)} % 6 + 1;
                 end
             end
-            generated <= 1'b1;
+            if_generated <= 1'b1;
         end
     end
 
