@@ -1,20 +1,20 @@
-// 采用VGA协议，在屏幕上显示棋盘
+// 采用VGA协议，在屏幕上显示棋�?
 // DD_final_project
 // 2023/12/25
 // Wan Zhenjie
 //reference:https://guahao31.github.io/2023_DD/final_project/attachment/vgac.v
 module vgac(
-    input vga_clk, // 接入25.175MHz时钟，可以25MHz代替
+    input vga_clk, // 接入25.175MHz时钟，可�?25MHz代替
     input clrn, // 重置信号, 低电平有效，将扫描信号归位到(0,0)
-    input [11:0] d_in, //12位 RGB 信号，格式为 bbbb_gggg_rrrr
+    input [11:0] d_in, //12�? RGB 信号，格式为 bbbb_gggg_rrrr
     output reg [8:0] row_addr, 
     output reg [9:0] col_addr,
     output reg [3:0] r,g,b,
     output reg rdn, //判断当前扫描到的地址是否为有效数据，低电平为有效
     output reg hsync, //水平同步信号
-    output reg vsync, //垂直同步信号
+    output reg vsync //垂直同步信号
     );
-    //水平计数器
+    //水平计数�?
     reg [9:0] h_count; // VGA horizontal counter (0-799): pixels
     always @ (posedge vga_clk) begin
         if (!clrn) begin
@@ -25,7 +25,7 @@ module vgac(
             h_count <= h_count + 10'h1;
         end
     end
-    //垂直计数器
+    //垂直计数�?
     reg [9:0] v_count; // VGA vertical   counter (0-524): lines
     always @ (posedge vga_clk or negedge clrn) begin
         if (!clrn) begin
