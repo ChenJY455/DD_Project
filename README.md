@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-DD_Project
+# DD_Project
 2023年秋冬学期数字逻辑设计大程————基于数字系统的三消游戏设计
 
 - 程序语言：verilog
