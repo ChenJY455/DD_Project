@@ -6,5 +6,12 @@ module refresh(
     input [2:0] board[0:7][0:7], // 当前棋盘
     output [2:0] reg new_board[0:7][0:7], // 新棋盘
     );
+    reg [2:0] reg down_board[0:7][0:7];
 
+    reg[2:0] rand;
+    // rand = {$random($get_initial_random_seed())} % 7;
+    integer seed;
+    initial begin seed = $get_initial_random_seed(); end
+
+    // always @(posedge clk) begin rand_num <= $random(seed); end
 endmodule
