@@ -1,12 +1,11 @@
-// write the simulation file of the module: eliminate.v
 /*
 module eliminate(
     input clk, // 时钟信号
     input [2:0] board[0:7][0:7], // 当前棋盘
-    input [3:0] x, // 光标�??在的单元格的x坐标
-    input [3:0] y, // 光标�??在的单元格的y坐标
-    input confirm, // 操作前是否确�??
-    output [2:0]reg new_board[0:7][0:7], // 新棋�??
+    input [3:0] x, // 光标�??在的单元格的x坐标
+    input [3:0] y, // 光标�??在的单元格的y坐标
+    input confirm, // 操作前是否确�??
+    output [2:0]reg new_board[0:7][0:7], // 新棋�??
     );
 */
 `timescale 1ns/1ns
