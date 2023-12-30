@@ -1,13 +1,13 @@
 // 实现与键盘的交互
-// 1. 四相移动 —— WASD/上下左右
-// 2. 选中 —— Space/Enter
-// 3. 取消选中 —— Esc
+// 1. 四相移动 —�?? WASD/上下左右
+// 2. 选中 —�?? Space/Enter
+// 3. 取消选中 —�?? Esc
 
-// 参考JOJO的代码，实现PS/2键盘的输入
+// 参�?�JOJO的代码，实现PS/2键盘的输�?
 module PS2(
 	input clk, rst,
 	input ps2_clk, ps2_data,
-	output [2:0]reg operation
+	output reg[2:0] operation
 	);
 
     reg ps2_clk_falg0, ps2_clk_falg1, ps2_clk_falg2;
@@ -15,8 +15,8 @@ module PS2(
     reg negedge_ps2_clk_shift;
     reg [9:0] data;
     reg data_break, data_done, data_expand;
-    reg[7:0]temp_data;
-    reg[3:0]num;
+    reg [7:0] temp_data;
+    reg [3:0] num;
 
     always@(posedge clk or posedge rst)begin
         if(rst)begin

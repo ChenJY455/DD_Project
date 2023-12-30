@@ -16,7 +16,7 @@ module top(
     output reg [3:0] vga_g,
     output reg [3:0] vga_b,
     output wire [9:0] y,         //屏幕y坐标
-    output wire [8:0] x;           //屏幕x坐标
+    output wire [8:0] x           //屏幕x坐标
     );
 
     //时钟分频
