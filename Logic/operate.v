@@ -1,19 +1,61 @@
-// select：选中一个单元
-// shift_up：将选中的单元格与上方的单元格交换
-// shift_down：将选中的单元格与下方的单元格交换
-// shift_left：将选中的单元格与左方的单元格交换
-// shift_right：将选中的单元格与右方的单元格交换
-
+// select：�?�中�?个单�?
+// confirm：确认�?�中的单元�?�进行消除操�?
+// 在�?�中�?个单元之后，寻找与它相邻的同色单元，将它们标记为待确认删除的状�??
 module operate(
     input clk,
-    input [2:0] board[0:7][0:7], // 当前棋盘
-    input [3:0] x, // 光标所在的单元格的x坐标
-    input [3:0] y, // 光标所在的单元格的y坐标
-    input selected, // 操作前是否选中
-    input [3:0] operate, // 操作，具体见config.md
-    output [2:0]reg new_board[0:7][0:7], // 新棋盘
-    output reg select, // 操作后是否被选中
-    output reg moved // 是否移动了
+    input [3:0] x, // 光标�?在的单元格的x坐标
+    input [3:0] y, // 光标�?在的单元格的y坐标
+    input selected, // 操作前是否�?�中
+    input [2:0] operaion,
+    output reg new_selected, // 操作后是否�?�中
+    output reg[3:0] new_x, // 操作后光标所在的单元格的x坐标
+    output reg[3:0] new_y, // 操作后光标所在的单元格的y坐标
+    output reg if_eliminate // 是否消除
     );
+
+	always @(posedge clk) begin
+        case(operaion)
+        3'd1:
+            // select
+            if (selected) begin
+                if_eliminate <= 1'b1;
+            end else begin
+                new_selected <= 1'b1;
+            end
+        3'd2:
+            // cancel
+            if (selected) begin
+                new_selected <= 1'b0;
+            end
+        3'd3:
+            // shift left
+            if (~selected) begin
+                if (x > 0) begin
+                    new_x <= x - 1;
+                end
+            end
+        3'd4:
+            // shift right
+            if (~selected) begin
+                if (x < 7) begin
+                    new_x <= x + 1;
+                end
+            end
+        3'd5:
+            // shift up
+            if (~selected) begin
+                if (y > 0) begin
+                    new_y <= y - 1;
+                end
+            end
+        3'd6:
+            // shift down
+            if (~selected) begin
+                if (y < 7) begin
+                    new_y <= y + 1;
+                end
+            end
+        endcase
+    end
 
 endmodule

@@ -1,75 +1,119 @@
 // 实现与键盘的交互
-// 1. 四相移动 —— WASD/上下左右
-// 2. 选中 —— Space/Enter
-// 3. 取消选中 —— Esc
+// 1. 四相移动 —�?? WASD/上下左右
+// 2. 选中 —�?? Space/Enter
+// 3. 取消选中 —�?? Esc
 
-// TODO: 调用防抖动模块debounce
-module PS_2(
-    input clk,          // 时钟信号
-    input reset,        // 重置信号
-    input ps2_clk,      // PS/2 键盘时钟线
-    input ps2_data,     // PS/2 键盘数据线
-    output reg [2:0] data, // Config.md中的简化键盘码
-    output reg valid    // 数据有效标志
-);
+// 参�?�JOJO的代码，实现PS/2键盘的输�?
+module PS2(
+	input clk, rst,
+	input ps2_clk, ps2_data,
+	output reg[2:0] operation
+	);
 
-    // gpt写的框架，还需要改，并且把解码的键盘码改为Config.md中的简化键盘码
+    reg ps2_clk_falg0, ps2_clk_falg1, ps2_clk_falg2;
+    wire negedge_ps2_clk = !ps2_clk_falg1 & ps2_clk_falg2;
+    reg negedge_ps2_clk_shift;
+    reg [9:0] data;
+    reg data_break, data_done, data_expand;
+    reg [7:0] temp_data;
+    reg [3:0] num;
 
-    // // 状态定义
-    // localparam WAIT_START = 0,
-    //            READ_BITS = 1,
-    //            CHECK_PARITY = 2,
-    //            CHECK_STOP = 3;
+    always@(posedge clk or posedge rst)begin
+        if(rst)begin
+            ps2_clk_falg0 <= 1'b0;
+            ps2_clk_falg1 <= 1'b0;
+            ps2_clk_falg2 <= 1'b0;
+        end
+        else begin
+            ps2_clk_falg0 <= ps2_clk;
+            ps2_clk_falg1 <= ps2_clk_falg0;
+            ps2_clk_falg2 <= ps2_clk_falg1;
+        end
+    end
 
-    // reg [2:0] state;             // 当前状态
-    // reg [3:0] bit_count;         // 位计数器
-    // reg [8:0] shift_reg;         // 移位寄存器
-    // reg ps2_clk_last;            // PS/2 时钟的上一个值
+    always@(posedge clk or posedge rst)begin
+        if(rst)
+            num <= 4'd0;
+        else if (num == 4'd11)
+            num <= 4'd0;
+        else if (negedge_ps2_clk)
+            num <= num+1'b1;
+    end
 
-    // // 检测时钟的下降沿
-    // wire ps2_clk_falling_edge;
-    // assign ps2_clk_falling_edge = ps2_clk_last && ~ps2_clk;
-    // always @(posedge clk) begin
-    //     if (reset) begin
-    //         ps2_clk_last <= 1'b1;
-    //     end else begin
-    //         ps2_clk_last <= ps2_clk;
-    //     end
-    // end
+    always@(posedge clk)begin
+        negedge_ps2_clk_shift <= negedge_ps2_clk;
+    end
 
-    // // 状态机
-    // always @(posedge clk) begin
-    //     if (reset) begin
-    //         state <= WAIT_START;
-    //         bit_count <= 0;
-    //         shift_reg <= 0;
-    //         valid <= 0;
-    //     end else if (ps2_clk_falling_edge) begin
-    //         case (state)
-    //             WAIT_START: begin
-    //                 if (ps2_data == 0) // 检测到起始位
-    //                     state <= READ_BITS;
-    //             end
-    //             READ_BITS: begin
-    //                 shift_reg <= {ps2_data, shift_reg[8:1]};
-    //                 bit_count <= bit_count + 1;
-    //                 if (bit_count == 8) begin
-    //                     state <= CHECK_PARITY;
-    //                 end
-    //             end
-    //             CHECK_PARITY: begin
-    //                 // 检查奇偶校验（此处可添加奇偶校验逻辑）
-    //                 state <= CHECK_STOP;
-    //             end
-    //             CHECK_STOP: begin
-    //                 if (ps2_data == 1) begin // 检测到停止位
-    //                     data <= shift_reg[7:0];
-    //                     valid <= 1;
-    //                 end
-    //                 state <= WAIT_START;
-    //             end
-    //             default: state <= WAIT_START;
-    //         endcase
-    //     end
-    // end
+
+    always@(posedge clk or posedge rst)begin
+        if(rst)
+            temp_data <= 8'd0;
+        else if (negedge_ps2_clk_shift)begin
+            case(num)
+                4'd2: temp_data[0] <= ps2_data;
+                4'd3: temp_data[1] <= ps2_data;
+                4'd4: temp_data[2] <= ps2_data;
+                4'd5: temp_data[3] <= ps2_data;
+                4'd6: temp_data[4] <= ps2_data;
+                4'd7: temp_data[5] <= ps2_data;
+                4'd8: temp_data[6] <= ps2_data;
+                4'd9: temp_data[7] <= ps2_data;
+                default: temp_data <= temp_data;
+            endcase
+        end
+        else temp_data <= temp_data;
+    end
+
+    always@(posedge clk or posedge rst)begin
+        if(rst)begin
+            data_break <= 1'b0;
+            data <= 10'd0;
+            data_done <= 1'b0;
+            data_expand <= 1'b0;
+        end
+        else if(num == 4'd11)begin
+            if(temp_data == 8'hE0)begin
+                data_expand <= 1'b1;
+            end
+            else if(temp_data == 8'hF0)begin
+                data_break <= 1'b1;
+            end
+            else begin
+                data <= {data_expand,data_break,temp_data};
+                data_done <= 1'b1;
+                data_expand <= 1'b0;
+                data_break <= 1'b0;
+            end
+        end
+        else begin
+            data <= data;
+            data_done <= 1'b0;
+            data_expand <= data_expand;
+            data_break <= data_break;
+        end
+    end
+
+    always @(posedge clk) begin
+        case (data)
+            // choose or remove
+            10'h05A: operation <= 3'd1;
+            10'h15A: operation <= 3'd0;
+            // cancel choosen
+            10'h076: operation <= 3'd2;
+            10'h176: operation <= 3'd0;
+            // left
+            10'h26B: operation <= 3'd3;
+            10'h36B: operation <= 3'd0;
+            // right
+            10'h274: operation <= 3'd4;
+            10'h374: operation <= 3'd0;
+            // up
+            10'h275: operation <= 3'd5;
+            10'h375: operation <= 3'd0;
+            // down
+            10'h272: operation <= 3'd6;
+            10'h372: operation <= 3'd0;
+        endcase
+    end
+
 endmodule
