@@ -2,37 +2,40 @@
 module eliminate(
     input clk, // 时钟信号
     input [2:0] board[0:7][0:7], // 当前棋盘
-    input [3:0] x, // 光标�??在的单元格的x坐标
-    input [3:0] y, // 光标�??在的单元格的y坐标
-    input confirm, // 操作前是否确�??
-    output [2:0]reg new_board[0:7][0:7], // 新棋�??
+    input [3:0] x, // 光标�?????在的单元格的x坐标
+    input [3:0] y, // 光标�?????在的单元格的y坐标
+    input confirm, // 操作前是否确�?????
+    output [2:0]reg new_board[0:7][0:7], // 新棋�?????
     );
 */
 `timescale 1ns/1ns
 module eliminate_tb();
     // Testbench code goes here
-    reg clk;
     reg [191:0] board;
     reg [3:0] x;
     reg [3:0] y;
     reg confirm;
+    reg [6:0] score;
     wire [191:0] new_board;
+    wire [6:0] new_score;
     integer i, j;
 
     eliminate uut(
-        .clk(clk),
         .board(board),
         .x(x),
         .y(y),
         .confirm(confirm),
-        .new_board(new_board)
+        .score(score),
+        .new_board(new_board),
+        .new_score(new_score)
     );
-    always @(*) begin
+    always @(new_board)
         board = new_board;
-    end
+    always @(new_score)
+        score = new_score;
     initial begin
-        clk = 1'b0;
-        forever #5 clk = ~clk;
+        score = 6'b0;
+        board = 192'h111111112222222233333333;
     end
     initial begin
         for(i = 0; i < 8; i = i + 1) begin

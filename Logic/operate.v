@@ -1,20 +1,30 @@
-// select：�?�中�?个单�?
-// confirm：确认�?�中的单元�?�进行消除操�?
-// 在�?�中�?个单元之后，寻找与它相邻的同色单元，将它们标记为待确认删除的状�??
+// select：�?�中�???个单�???
+// confirm：确认�?�中的单元�?�进行消除操�???
+// 在�?�中�???个单元之后，寻找与它相邻的同色单元，将它们标记为待确认删除的状�??
 module operate(
     input clk,
-    input [3:0] x, // 光标�?在的单元格的x坐标
-    input [3:0] y, // 光标�?在的单元格的y坐标
-    input selected, // 操作前是否�?�中
-    input [2:0] operaion,
-    output reg new_selected, // 操作后是否�?�中
+    input [3:0] x, // 光标�???在的单元格的x坐标
+    input [3:0] y, // 光标�???在的单元格的y坐标
+    input selected, // 操作前是否�?�中
+    input [2:0] operation,
+    output reg new_selected, // 操作后是否�?�中
     output reg[3:0] new_x, // 操作后光标所在的单元格的x坐标
     output reg[3:0] new_y, // 操作后光标所在的单元格的y坐标
     output reg if_eliminate // 是否消除
     );
 
+    initial begin
+        new_selected = 1'b0;
+        new_x = 4'b0000;
+        new_y = 4'b0000;
+        if_eliminate = 1'b0;
+    end
 	always @(posedge clk) begin
-        case(operaion)
+        new_selected = selected;
+        new_x = x;
+        new_y = y;
+        
+        case(operation)
         3'd1:
             // select
             if (selected) begin

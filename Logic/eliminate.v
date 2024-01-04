@@ -1,14 +1,15 @@
-// confirm：确认�?�中的单元�?�进行消除操�???
-// 在�?�中�???个单元之后，寻找与它相邻的同色单元，将它们标记为待确认删除的状�??
+// confirm：确认�?�中的单元�?�进行消除操�?????
+// 在�?�中�?????个单元之后，寻找与它相邻的同色单元，将它们标记为待确认删除的状�??
 
 
 module eliminate(
-    input  clk,
     input  [191:0] board, // 当前棋盘
-    input  [3:0] x, // 光标�???在的单元格的x坐标
-    input  [3:0] y, // 光标�???在的单元格的y坐标
-    input confirm, // 操作前是否确�???
-    output wire [191:0] new_board // 新棋�???
+    input  [3:0] x, // 光标�?????在的单元格的x坐标
+    input  [3:0] y, // 光标�?????在的单元格的y坐标
+    input confirm, // 操作前是否确�?????
+    input [6:0] score,
+    output wire [191:0] new_board, // 新棋�?????
+    output [6:0] new_score
     );
     function [1:0] unionfindset(input [1:0] rst, input integer in1, input integer in2); // rst: 0 reset; 1 find and merge; 2 find
         reg [7:0] root[63:0], count[63:0];
@@ -55,12 +56,16 @@ module eliminate(
     endfunction
     reg [2:0] board0[7:0][7:0];
     reg [2:0] new_board0[7:0][7:0];
+    reg [6:0] new_score0;
     integer i, j;
-//    always @(*) begin
-        
-//    end
+
+    assign new_score = new_score0;
+    always @(*) begin
+        new_score0 = score;
+    end
+
     // reg visit[0:7][0:7]; // 判断哪几个单元格已经被访问过
-    reg [2:0] color; // 选中的单元格的颜�???
+    reg [2:0] color; // 选中的单元格的颜�?????
     reg [1:0] flag, flag1, flag2, flag3, flag4;
     integer in1, in2;
     reg mark;
@@ -111,6 +116,7 @@ module eliminate(
                 for(j = 0; j < 8; j = j + 1) begin
                     if(unionfindset(2, x * 8 + y, i * 8 + j) == 1) begin
                             new_board0[i][j] = 0;
+                            new_score0 = new_score0 + 6'b1;
                     end else begin
                         new_board0[i][j] = board0[i][j];
                     end
