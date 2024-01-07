@@ -1,2 +1,0 @@
-cover.v,verilog,xil_defaultlib,../../../../PopStar.gen/sources_1/ip/cover/sim/cover.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v
