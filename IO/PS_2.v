@@ -1,9 +1,9 @@
 // 实现与键盘的交互
-// 1. 四相移动 —�?? WASD/上下左右
-// 2. 选中 —�?? Space/Enter
-// 3. 取消选中 —�?? Esc
+// 1. 四相移动 —�?? WASD/上下左右
+// 2. 选中 —�?? Space/Enter
+// 3. 取消选中 —�?? Esc
 
-// 参�?�JOJO的代码，实现PS/2键盘的输�?
+// 参�?�JOJO的代码，实现PS/2键盘的输�?
 module PS2(
 	input clk, rst,
 	input ps2_clk, ps2_data,

@@ -18,18 +18,18 @@ module top(
     output [3:0] G
     );
     //jie mian
-    reg cover;                  //gamestart
+    reg cover0;                  //gamestart
     reg finish;                 //gameover
     initial begin
-        cover=0;
+        cover0=0;
         finish=0;
     end
     //时钟分�
     wire [31:0]clkdiv;
     wire clk_in_game;
     wire clk_cover;
-    assign clk_in_game = clk & cover;
-    assign clk_cover = clk & (~cover) & (~finish);
+    assign clk_in_game = clk & cover0;
+    assign clk_cover = clk & (~cover0) & (~finish);
     
     clkdiv clkdiv_inst(
         .clk(clk),
@@ -121,10 +121,10 @@ module top(
     ////////////////control signal/////////////////////
     always @(posedge clk) begin
         if (SW[1] == 0) begin
-            cover <= 0;
+            cover0 <= 0;
         end
         else begin
-            cover <= 1;
+            cover0 <= 1;
         end
     end
 
