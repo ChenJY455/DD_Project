@@ -20,8 +20,9 @@ module top(
     //jie mian
     reg cover;                  //gamestart
     reg finish;                 //gameover
-    reg x;
-    reg y;
+    reg [3:0] x;
+    reg [3:0] y;
+    wire [4:0] operation;
     initial begin
         cover=0;
         finish=0;
@@ -58,6 +59,25 @@ module top(
         .vs(VS)
     );
     
+    PS2 PS2_inst(
+        .clk(clk),
+        .rst(1'b0),
+        .ps2_clk(PS2_clk),
+        .ps2_data(PS2_data),
+        .operation(operation)
+    );
+    
+    wire [3:0] x_next;
+    wire [3:0] y_next;
+    operate operate_inst(
+        .clk(clk),
+        .x(x),
+        .y(y),
+        .operation(operation),
+        .new_x(x_next),
+        .new_y(y_next),
+        .if_eliminate(if_eliminate)
+    );
     //chess board
     //0 for red, 1 for green, 2 for blue, 3 for yellow, 4 for purple, 5 for white
     reg [2:0] chess_board[7:0][7:0];
@@ -66,8 +86,7 @@ module top(
         k=0;
         for (i=0;i<8;i=i+1) begin
             for (j=0;j<8;j=j+1) begin
-                chess_board[i][j]=k;
-                k = (k+1)%6;
+                chess_board[i][j]=1;
             end
         end
     end
@@ -248,6 +267,11 @@ module top(
         else begin
             cover <= 1;
         end
+    end
+    
+    always @(posedge clk) begin
+        x <= x_next;
+        y <= y_next;
     end
     
     always @(posedge clk) begin

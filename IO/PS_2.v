@@ -3,13 +3,13 @@
 // 2. 选中 —�?? Space/Enter
 // 3. 取消选中 —�?? Esc
 
-// 参�?�JOJO的代码，实现PS/2键盘的输�???
+// 参�?�JOJO的代码，实现PS/2键盘的输�????????
 module PS2(
 	input clk, rst,
 	input ps2_clk, ps2_data,
 	output[5:0] operation
 	);
-    reg [5:0] operation_reg;
+    reg [4:0] operation_reg;
     reg ps2_clk_falg0, ps2_clk_falg1, ps2_clk_falg2;
     wire negedge_ps2_clk = !ps2_clk_falg1 & ps2_clk_falg2;
     reg negedge_ps2_clk_shift;
@@ -17,6 +17,7 @@ module PS2(
     reg data_break, data_done, data_expand;
     reg [7:0] temp_data;
     reg [3:0] num;
+    reg [23:0] ope_accu [0:4];
     assign operation = operation_reg;
     always@(posedge clk or posedge rst)begin
         if(rst)begin
@@ -96,24 +97,64 @@ module PS2(
     always @(posedge clk) begin
         case (data)
             // choose or remove
-            10'h05A: operation_reg[0] <= 1'd1;
-            10'h15A: operation_reg[0] <= 1'd0;
-            // cancel choosen
-            10'h076: operation_reg[1] <= 1'd1;
-            10'h176: operation_reg[1] <= 1'd0;
+            10'h05A: ope_accu[0] <= ope_accu[0] + 1;
+//            10'h15A: ope_accu[0] <= 0;
             // left
-            10'h26B: operation_reg[2] <= 1'd1;
-            10'h36B: operation_reg[2] <= 1'd0;
+            10'h26B: ope_accu[1] <= ope_accu[1] + 1;
+//            10'h36B: ope_accu[1] <= 0;
             // right
-            10'h274: operation_reg[3] <= 1'd1;
-            10'h374: operation_reg[3] <= 1'd0;
+            10'h274: ope_accu[2] <= ope_accu[2] + 1;
+//            10'h374: ope_accu[2] <= 0;
             // up
-            10'h275: operation_reg[4] <= 1'd1;
-            10'h375: operation_reg[4] <= 1'd0;
+            10'h275: ope_accu[3] <= ope_accu[3] + 1;
+//            10'h375: ope_accu[3] <= 0;
             // down
-            10'h272: operation_reg[5] <= 1'd1;
-            10'h372: operation_reg[5] <= 1'd0;
+            10'h272: ope_accu[4] <= ope_accu[4] + 1;
+//            10'h372: ope_accu[4] <= 0;
+            default: begin
+                ope_accu[0] <= 24'b0;
+                ope_accu[1] <= 24'b0;
+                ope_accu[2] <= 24'b0;
+                ope_accu[3] <= 24'b0;
+                ope_accu[4] <= 24'b0;
+            end
         endcase
+        
+        if(ope_accu[0][23] == 1) begin
+            operation_reg[0] <= 1'b1;
+            ope_accu[0] <= 23'b0; 
+        end
+        else begin
+            operation_reg[0] <= 1'b0;
+        end
+        if(ope_accu[1][23] == 1) begin
+            operation_reg[1] <= 1'b1;
+            ope_accu[1] <= 23'b0; 
+        end
+        else begin
+            operation_reg[1] <= 1'b0;
+        end
+        if(ope_accu[2][23] == 1) begin
+            operation_reg[2] <= 1'b1;
+            ope_accu[2] <= 23'b0; 
+        end
+        else begin
+            operation_reg[2] <= 1'b0;
+        end
+        if(ope_accu[3][23] == 1) begin
+            operation_reg[3] <= 1'b1;
+            ope_accu[3] <= 23'b0; 
+        end
+        else begin
+            operation_reg[3] <= 1'b0;
+        end
+        if(ope_accu[4][23] == 1) begin
+            operation_reg[4] <= 1'b1;
+            ope_accu[4] <= 23'b0; 
+        end
+        else begin
+            operation_reg[4] <= 1'b0;
+        end
     end
 
 endmodule
