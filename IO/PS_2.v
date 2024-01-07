@@ -7,9 +7,9 @@
 module PS2(
 	input clk, rst,
 	input ps2_clk, ps2_data,
-	output reg[2:0] operation
+	output[5:0] operation
 	);
-
+    reg [5:0] operation_reg;
     reg ps2_clk_falg0, ps2_clk_falg1, ps2_clk_falg2;
     wire negedge_ps2_clk = !ps2_clk_falg1 & ps2_clk_falg2;
     reg negedge_ps2_clk_shift;
@@ -17,7 +17,7 @@ module PS2(
     reg data_break, data_done, data_expand;
     reg [7:0] temp_data;
     reg [3:0] num;
-
+    assign operation = operation_reg;
     always@(posedge clk or posedge rst)begin
         if(rst)begin
             ps2_clk_falg0 <= 1'b0;
@@ -96,23 +96,23 @@ module PS2(
     always @(posedge clk) begin
         case (data)
             // choose or remove
-            10'h05A: operation <= 3'd1;
-            10'h15A: operation <= 3'd0;
+            10'h05A: operation_reg[0] <= 1'd1;
+            10'h15A: operation_reg[0] <= 1'd0;
             // cancel choosen
-            10'h076: operation <= 3'd2;
-            10'h176: operation <= 3'd0;
+            10'h076: operation_reg[1] <= 1'd1;
+            10'h176: operation_reg[1] <= 1'd0;
             // left
-            10'h26B: operation <= 3'd3;
-            10'h36B: operation <= 3'd0;
+            10'h26B: operation_reg[2] <= 1'd1;
+            10'h36B: operation_reg[2] <= 1'd0;
             // right
-            10'h274: operation <= 3'd4;
-            10'h374: operation <= 3'd0;
+            10'h274: operation_reg[3] <= 1'd1;
+            10'h374: operation_reg[3] <= 1'd0;
             // up
-            10'h275: operation <= 3'd5;
-            10'h375: operation <= 3'd0;
+            10'h275: operation_reg[4] <= 1'd1;
+            10'h375: operation_reg[4] <= 1'd0;
             // down
-            10'h272: operation <= 3'd6;
-            10'h372: operation <= 3'd0;
+            10'h272: operation_reg[5] <= 1'd1;
+            10'h372: operation_reg[5] <= 1'd0;
         endcase
     end
 

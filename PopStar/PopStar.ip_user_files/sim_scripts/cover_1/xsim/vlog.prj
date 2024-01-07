@@ -1,0 +1,6 @@
+verilog xil_defaultlib  \
+"../../../../IpCoreDir/cover_1/sim/cover.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+nosort

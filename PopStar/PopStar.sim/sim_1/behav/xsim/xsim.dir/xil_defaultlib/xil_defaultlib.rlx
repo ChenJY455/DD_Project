@@ -1,0 +1,9 @@
+0.7
+2020.2
+Nov 18 2020
+09:47:47
+C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vga_clkdiv.v,1703836486,verilog,,C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vgac.v,,vga_clkdiv,,,,,,,,
+C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vgac.v,1704436322,verilog,,C:/Users/86198/Desktop/vivadoProject/DD_Project/simulation/vga_tb.v,,vgac,,,,,,,,
+C:/Users/86198/Desktop/vivadoProject/DD_Project/simulation/vga_tb.v,1704440465,verilog,,C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vgac.v,,tb_vga,,,,,,,,
+C:/Users/86198/Desktop/vivadoProject/DD_Project/top.v,1704433066,verilog,,C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vgac.v,,top,,,,,,,,
+C:/Users/86198/Desktop/vivadoProject/PopStar/PopStar.sim/sim_1/behav/xsim/glbl.v,1605673889,verilog,,,,glbl,,,,,,,,
