@@ -1,0 +1,4 @@
+xpm_memory.sv,systemverilog,xpm,D:/tools/Xilinx/Vivado/2020.2/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv,
+xpm_VCOMP.vhd,vhdl,xpm,D:/tools/Xilinx/Vivado/2020.2/data/ip/xpm/xpm_VCOMP.vhd,
+blk_mem_gen_0_sim_netlist.v,verilog,xil_defaultlib,c:/Users/86198/Desktop/vivadoProject/PopStar/PopStar.gen/sources_1/ip/blk_mem_gen_0_1/blk_mem_gen_0_sim_netlist.v,
+glbl.v,Verilog,xil_defaultlib,glbl.v

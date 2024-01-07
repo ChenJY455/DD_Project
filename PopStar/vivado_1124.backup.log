@@ -1,0 +1,55 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Sun Jan  7 10:52:03 2024
+# Process ID: 1124
+# Current directory: C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent35728 C:\Users\86198\Desktop\vivadoProject\DD_Project\PopStar\PopStar.xpr
+# Log file: C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar/vivado.log
+# Journal file: C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar/PopStar.xpr
+INFO: [Project 1-313] Project file moved from 'C:/Users/86198/Desktop/vivadoProject/PopStar' since last save.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/clkdiv.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/clkdiv.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/IO/VGA/vgac.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vgac.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/top.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/top.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/ROM_Process/cover/cover.coe' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/constraints.xdc'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/constraints.xdc' instead.
+CRITICAL WARNING: [Project 1-311] Could not find the file 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/simulation/vga_tb.v', nor could it be found using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/simulation/vga_tb.v'.
+Scanning sources...
+Finished scanning sources
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/clkdiv.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/clkdiv.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/IO/VGA/vgac.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vgac.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/top.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/top.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/ROM_Process/cover/cover.coe' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/constraints.xdc'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/constraints.xdc' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/clkdiv.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/clkdiv.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/IO/VGA/vgac.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/IO/VGA/vgac.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/top.v'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/top.v' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/ROM_Process/cover/cover.coe' instead.
+WARNING: [Project 1-312] File not found as 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/constraints.xdc'; using path 'C:/Users/86198/Desktop/vivadoProject/DD_Project/constraints.xdc' instead.
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'D:/tools/Xilinx/Vivado/2020.2/data/ip'.
+open_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:11 . Memory (MB): peak = 1015.180 ; gain = 0.000
+update_compile_order -fileset sources_1
+export_ip_user_files -of_objects  [get_files c:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe] -no_script -reset -force -quiet
+remove_files  c:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe
+export_ip_user_files -of_objects  [get_files C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/simulation/vga_tb.v] -no_script -reset -force -quiet
+remove_files  -fileset sim_1 C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/simulation/vga_tb.v
+reset_run synth_1
+reset_run cover_synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'cover'...
+ERROR: [Ipptcl 7-519] NULL COE Data pointer: Unable to open the file 
+ERROR: [Common 17-39] 'ipgui::get_coe_val' failed due to earlier errors.
+CRITICAL WARNING: [IP_Flow 19-1747] Failed to deliver file 'd:/tools/Xilinx/Vivado/2020.2/data/ip/xilinx/blk_mem_gen_v8_4/hdl/mem_init_file.xit': ERROR: [Common 17-39] 'ipgui::get_coe_val' failed due to earlier errors.
+
+ERROR: [IP_Flow 19-167] Failed to deliver one or more file(s).
+ERROR: [IP_Flow 19-3505] IP Generation error: Failed to generate IP 'cover'. Failed to generate 'Vivado VHDL Synthesis' outputs: 
+ERROR: [IP_Flow 19-98] Generation of the IP CORE failed.
+Failed to generate IP 'cover'. Failed to generate 'Vivado VHDL Synthesis' outputs: 
+exit
+INFO: [Common 17-206] Exiting Vivado at Sun Jan  7 10:54:36 2024...

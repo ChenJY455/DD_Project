@@ -1,0 +1,31 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Sun Jan  7 10:55:31 2024
+# Process ID: 12076
+# Current directory: C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent25540 C:\Users\86198\Desktop\vivadoProject\DD_Project\PopStar\PopStar.xpr
+# Log file: C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar/vivado.log
+# Journal file: C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar\vivado.jou
+#-----------------------------------------------------------
+start_guioopen_project C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar/PopStar.xpr
+CRITICAL WARNING: [Project 1-19] Could not find the file 'C:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe'.
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repositoryupdate_compile_order -fileset sources_1
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+WARNING: [IP_Flow 19-4067] Ignoring invalid widget type specified checkbox.Providing a default widget
+INFO: [IP_Flow 19-3484] Absolute path of file 'c:/Users/86198/Desktop/vivadoProject/DD_Project/ROM_Process/cover/cover.coe' provided. It will be converted relative to IP Instance files '../../../../../ROM_Process/cover/cover.coe'
+export_ip_user_files -of_objects  [get_files c:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe] -no_script -reset -force -quiet
+remove_files  c:/Users/86198/Desktop/vivadoProject/DD_Project/DD_Project/ROM_Process/cover/cover.coe
+export_ip_user_files -of_objects  [get_files C:/Users/86198/Desktop/vivadoProject/DD_Project/ROM_Process/cover/cover.coe] -no_script -reset -force -quiet
+remove_files  C:/Users/86198/Desktop/vivadoProject/DD_Project/ROM_Process/cover/cover.coe
+add_files -norecurse C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar/IpCoreDir/cover/cover.xci
+CRITICAL WARNING: [IP_Flow 19-3389] Failed to import IP file 'C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar/IpCoreDir/cover/cover.xci': IP name 'cover' is already in use in this project.  Please choose a different name.
+
+CRITICAL WARNING: [Vivado 12-1464] The source file 'C:/Users/86198/Desktop/vivadoProject/DD_Project/PopStar/IpCoreDir/cover/cover.xci' cannot be added to the fileset 'sources_1'.
+exit
+INFO: [Common 17-206] Exiting Vivado at Sun Jan  7 11:02:06 2024...
