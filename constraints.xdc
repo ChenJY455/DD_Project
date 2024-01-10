@@ -106,3 +106,22 @@ set_property IOSTANDARD LVCMOS33 [get_ports HS]
 set_property PACKAGE_PIN M21 [get_ports VS]
 set_property IOSTANDARD LVCMOS33 [get_ports VS]
 
+# 7SEG
+set_property PACKAGE_PIN M24 [get_ports {SD_clk}]
+set_property PACKAGE_PIN M20 [get_ports {SD_clrn}]
+set_property PACKAGE_PIN L24 [get_ports {SD_sout}]
+set_property PACKAGE_PIN R18 [get_ports {SD_PEN}]
+set_property IOSTANDARD LVCMOS33 [get_ports {SD_clk}]
+set_property IOSTANDARD LVCMOS33 [get_ports {SD_clrn}]
+set_property IOSTANDARD LVCMOS33 [get_ports {SD_sout}]
+set_property IOSTANDARD LVCMOS33 [get_ports {SD_PEN}]
+
+# # LED
+# set_property PACKAGE_PIN N26 [get_ports {LED_clk}]
+# set_property PACKAGE_PIN N24 [get_ports {LED_clrn}]
+# set_property PACKAGE_PIN M26 [get_ports {LED_sout}]
+#  set_property PACKAGE_PIN P18 [get_ports {LED_EN}]
+# set_property IOSTANDARD LVCMOS33 [get_ports {LED_clk}]
+# set_property IOSTANDARD LVCMOS33 [get_ports {LED_clrn}]
+# set_property IOSTANDARD LVCMOS33 [get_ports {LED_sout}]
+#  set_property IOSTANDARD LVCMOS33 [get_ports {LED_EN}]

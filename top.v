@@ -4,6 +4,8 @@
 module top(
     input clk,                             // 50MHz
     input [15:0] SW,                       // switch
+    input PS2_clk,
+    input PS2_data,
     //input reset,                           //negative signal
 
     //...
@@ -15,7 +17,12 @@ module top(
     output  VS,
     output [3:0] R,
     output [3:0] B,
-    output [3:0] G
+    output [3:0] G,
+    output SD_clk,
+    output SD_clrn,
+    output SD_sout,
+    output SD_PEN
+
     );
     //jie mian
     reg cover;                  //gamestart
@@ -23,6 +30,7 @@ module top(
     reg [3:0] x;
     reg [3:0] y;
     wire [4:0] operation;
+    wire if_eliminate;
     initial begin
         cover=0;
         finish=0;
@@ -78,6 +86,19 @@ module top(
         .new_y(y_next),
         .if_eliminate(if_eliminate)
     );
+
+    Sseg_Dev Sseg_Dev_inst(
+        .clk(clk),
+        .start(clkdiv[20]),
+        .hexs({0,x,y}),
+        .points(8'b0),
+        .LEs(8'b0),
+        .sclk(SD_clk),
+        .sclrn(SD_clrn),
+        .sout(SD_sout),
+        .EN(SD_PEN)
+    );
+
     //chess board
     //0 for red, 1 for green, 2 for blue, 3 for yellow, 4 for purple, 5 for white
     reg [2:0] chess_board[7:0][7:0];
@@ -272,15 +293,6 @@ module top(
     always @(posedge clk) begin
         x <= x_next;
         y <= y_next;
-    end
-    
-    always @(posedge clk) begin
-        if (SW[2] == 1) begin
-            x = (x+1) % 8;
-        end
-        if (SW[3] == 1) begin
-            y = (y+1) % 8;
-        end
     end
 
 endmodule

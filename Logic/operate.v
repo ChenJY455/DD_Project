@@ -17,45 +17,47 @@ module operate(
         if_eliminate = 1'b0;
     end
 	always @(posedge clk) begin
-
+        new_x = x;
+        new_y = y;
+        if_eliminate = 0;
         // confirm
         if(operation[0] == 1'b1) begin
-            new_x <= x;
-            new_y <= y;
-            if_eliminate <= 1'b1;
+            new_x = x;
+            new_y = y;
+            if_eliminate = 1'b1;
         end 
         // shift left
-         else if(operation[1] == 1'b1) begin
-            new_x <= x;
-            if_eliminate <= 1'b0;
+         if(operation[1] == 1'b1) begin
+            new_x = x;
+            if_eliminate = 1'b0;
             if (y > 0) begin
-                new_y <= y - 1;
+                new_y = y - 1;
             end
         end
         // shift right  
-        else if(operation[2] == 1'b1) begin
-            new_x <= x;
-            if_eliminate <= 1'b0;
+        if(operation[2] == 1'b1) begin
+            new_x = x;
+            if_eliminate = 1'b0;
             if (y < 7) begin
-                new_y <= y + 1;
+                new_y = y + 1;
             end
-        end
+        end 
         // shift up
-        else if(operation[3] == 1'b1) begin
-            new_y <= y;
-            if_eliminate <= 1'b0;
+        if(operation[3] == 1'b1) begin
+            new_y = y;
+            if_eliminate = 1'b0;
             if (x > 0) begin
-                new_x <= x - 1;
+                new_x = x - 1;
             end
-        end
+        end 
         // shift down
-        else if(operation[4] == 1'b1) begin
-            new_y <= y;
-            if_eliminate <= 1'b0;
+        if(operation[4] == 1'b1) begin
+            new_y = y;
+            if_eliminate = 1'b0;
             if (x < 7) begin
-                new_x <= x + 1;
+                new_x = x + 1;
             end
-        end
+        end 
 
     end
 
