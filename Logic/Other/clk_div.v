@@ -1,5 +1,5 @@
 // 时钟分频
-module clkdiv(
+module clk_div(
     input               clk,
     input               rst, // Active-high
     output reg [31:0]   div_res

@@ -11,54 +11,52 @@ module operate(
     output reg if_eliminate // 是否消除
     );
 
-    initial begin
-        new_x = x;
-        new_y = y;
-        if_eliminate = 1'b0;
-    end
 	always @(posedge clk) begin
-        new_x = x;
-        new_y = y;
-        if_eliminate = 0;
-        // confirm
-        if(operation[0] == 1'b1) begin
-            new_x = x;
-            new_y = y;
-            if_eliminate = 1'b1;
-        end 
-        // shift left
-         if(operation[1] == 1'b1) begin
-            new_x = x;
-            if_eliminate = 1'b0;
-            if (y > 0) begin
-                new_y = y - 1;
+        if(!operation[0] && !operation[1] &&!operation[2] &&!operation[3] &&!operation[4]) begin
+            new_x <= x;
+            new_y <= y;
+            if_eliminate <= 1'b0;
+        end else begin
+            
+            // confirm
+            if(operation[0] == 1'b1) begin
+                new_x <= x;
+                new_y <= y;
+                if_eliminate <= 1'b1;
+            end 
+            // shift left
+             if(operation[1] == 1'b1) begin
+                new_x <= x;
+                if_eliminate <= 1'b0;
+                if (y > 0) begin
+                    new_y <= y - 1;
+                end
             end
+            // shift right  
+            if(operation[2] == 1'b1) begin
+                new_x <= x;
+                if_eliminate <= 1'b0;
+                if (y < 7) begin
+                    new_y <= y + 1;
+                end
+            end 
+            // shift up
+            if(operation[3] == 1'b1) begin
+                new_y <= y;
+                if_eliminate <= 1'b0;
+                if (x > 0) begin
+                    new_x <= x - 1;
+                end
+            end 
+            // shift down
+            if(operation[4] == 1'b1) begin
+                new_y <= y;
+                if_eliminate <= 1'b0;
+                if (x < 7) begin
+                    new_x <= x + 1;
+                end
+            end 
         end
-        // shift right  
-        if(operation[2] == 1'b1) begin
-            new_x = x;
-            if_eliminate = 1'b0;
-            if (y < 7) begin
-                new_y = y + 1;
-            end
-        end 
-        // shift up
-        if(operation[3] == 1'b1) begin
-            new_y = y;
-            if_eliminate = 1'b0;
-            if (x > 0) begin
-                new_x = x - 1;
-            end
-        end 
-        // shift down
-        if(operation[4] == 1'b1) begin
-            new_y = y;
-            if_eliminate = 1'b0;
-            if (x < 7) begin
-                new_x = x + 1;
-            end
-        end 
-
     end
 
 endmodule

@@ -21,13 +21,15 @@ module eliminate_tb();
     integer i, j;
 
     eliminate uut(
+        .clk(),
         .board(board),
         .x(x),
         .y(y),
         .confirm(confirm),
         .score(score),
         .new_board(new_board),
-        .new_score(new_score)
+        .new_score(new_score),
+        .eliminated()
     );
     always @(new_board)
         board = new_board;
@@ -35,7 +37,7 @@ module eliminate_tb();
         score = new_score;
     initial begin
         score = 6'b0;
-        board = 192'h111111112222222233333333;
+        //board = 192'h111111112222222233333333;
     end
     initial begin
         for(i = 0; i < 8; i = i + 1) begin

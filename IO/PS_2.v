@@ -1,13 +1,13 @@
-// 实现与键盘的交互
-// 1. 四相移动 —�?? WASD/上下左右
-// 2. 选中 —�?? Space/Enter
-// 3. 取消选中 —�?? Esc
+// ʵ������̵Ľ���
+// 1. �����ƶ� -??? WASD/��������
+// 2. ѡ�� -??? Space/Enter
+// 3. ȡ��ѡ�� -??? Esc
 
-// 参�?�JOJO的代码，实现PS/2键盘的输�????????
+// ��???JOJO�Ĵ��룬ʵ��PS/2���̵���?????????
 module PS2(
 	input clk, rst,
 	input ps2_clk, ps2_data,
-	output[5:0] operation
+	output[4:0] operation
 	);
     reg [4:0] operation_reg;
     reg ps2_clk_falg0, ps2_clk_falg1, ps2_clk_falg2;
@@ -122,35 +122,35 @@ module PS2(
         
         if(ope_accu[0][23] == 1) begin
             operation_reg[0] <= 1'b1;
-            ope_accu[0] <= 23'b0; 
+            ope_accu[0] <= 24'b0; 
         end
         else begin
             operation_reg[0] <= 1'b0;
         end
         if(ope_accu[1][23] == 1) begin
             operation_reg[1] <= 1'b1;
-            ope_accu[1] <= 23'b0; 
+            ope_accu[1] <= 24'b0; 
         end
         else begin
             operation_reg[1] <= 1'b0;
         end
         if(ope_accu[2][23] == 1) begin
             operation_reg[2] <= 1'b1;
-            ope_accu[2] <= 23'b0; 
+            ope_accu[2] <= 24'b0; 
         end
         else begin
             operation_reg[2] <= 1'b0;
         end
         if(ope_accu[3][23] == 1) begin
             operation_reg[3] <= 1'b1;
-            ope_accu[3] <= 23'b0; 
+            ope_accu[3] <= 24'b0; 
         end
         else begin
             operation_reg[3] <= 1'b0;
         end
         if(ope_accu[4][23] == 1) begin
             operation_reg[4] <= 1'b1;
-            ope_accu[4] <= 23'b0; 
+            ope_accu[4] <= 24'b0; 
         end
         else begin
             operation_reg[4] <= 1'b0;
