@@ -1,16 +1,16 @@
-// confirm：确认�?�中的单元�?�进行消除操�?????????
-// 在�?�中�?????????个单元之后，寻找与它相邻的同色单元，将它们标记为待确认删除的状�??
+// confirm：确认�?�中的单元�?�进行消除操�??????????
+// 在�?�中�??????????个单元之后，寻找与它相邻的同色单元，将它们标记为待确认删除的状�??
 
 
 module eliminate(
     input generated,
     input clk,
     input  [191:0] board, // 当前棋盘
-    input  [3:0] x, // 光标�?????????在的单元格的x坐标
-    input  [3:0] y, // 光标�?????????在的单元格的y坐标
-    input confirm, // 操作前是否确�?????????
+    input  [3:0] x, // 光标�??????????在的单元格的x坐标
+    input  [3:0] y, // 光标�??????????在的单元格的y坐标
+    input confirm, // 操作前是否确�??????????
     input [6:0] score,
-    output  [191:0] new_board, // 新棋�?????????
+    output  [191:0] new_board, // 新棋�??????????
     output reg [6:0] new_score,
     output reg eliminated,
     output reg [31:0] num
@@ -65,7 +65,7 @@ module eliminate(
 //    integer i, j;
 
 //    // reg visit[0:7][0:7]; // 判断哪几个单元格已经被访问过
-//    reg [2:0] color; // 选中的单元格的颜�?????????
+//    reg [2:0] color; // 选中的单元格的颜�??????????
 //    reg [1:0] flag, flag1, flag2, flag3, flag4;
 //    integer in1, in2;
 //    reg [16:0] mark;
@@ -137,7 +137,7 @@ module eliminate(
     integer i, j, k;
     integer l, r, u, p;
     // reg visit[0:7][0:7]; // 判断哪几个单元格已经被访问过
-    reg [2:0] color; // 选中的单元格的颜�?????????
+    reg [2:0] color; // 选中的单元格的颜�??????????
     //reg [1:0] flag, flag1, flag2, flag3, flag4;
     integer in1, in2;
     reg [1:0] mark[3:0];
@@ -192,6 +192,8 @@ module eliminate(
                 end else begin
                     mark[0] <= 0;
                 end
+            end else begin
+                    mark[0] <= 0;
             end
             if(y + 1 >= 0 && y + 1 <= 7) begin
                 if(board[(8 * x + y + 1) * 3 +: 3] == board[(8 * x + y) * 3 +: 3]) begin
@@ -200,6 +202,8 @@ module eliminate(
                 end else begin
                     mark[1] <= 0;
                 end
+            end else begin
+                    mark[1] <= 0;
             end
             if(x - 1 >= 0 && x - 1 <= 7) begin
                 if(board[(8 * (x - 1) + y) * 3 +: 3] == board[(8 * x + y) * 3 +: 3]) begin
@@ -208,6 +212,8 @@ module eliminate(
                 end else begin
                     mark[2] <= 0;
                 end
+            end else begin
+                    mark[2] <= 0;
             end
             if(x + 1 >= 0 && x + 1 <= 7) begin
                 if(board[(8 * (x + 1) + y) * 3 +: 3] == board[(8 * x + y) * 3 +: 3]) begin
@@ -216,6 +222,8 @@ module eliminate(
                 end else begin
                     mark[3] <= 0;
                 end
+            end else begin
+                    mark[3] <= 0;
             end
         end
         else begin

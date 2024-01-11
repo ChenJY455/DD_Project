@@ -4,8 +4,6 @@
 module top(
     input clk,                             // 50MHz
     input [15:0] SW,                       // switch
-    input PS2_clk,
-    input PS2_data,
     //input reset,                           //negative signal
     input PS2_clk,
     input PS2_data,
@@ -15,34 +13,28 @@ module top(
     output SD_clrn,
     output SD_sout,
     output SD_PEN,
+    output LED_clk,
+    output LED_clrn,
+    output LED_sout,
+    output LED_EN,
+    output buzzer,
+    
 
-    //VGA杈撳嚭淇℃伅
+    //VGA输出信息
     output  HS,
     output  VS,
     output [3:0] R,
     output [3:0] B,
-    output [3:0] G,
-    output SD_clk,
-    output SD_clrn,
-    output SD_sout,
-    output SD_PEN
-
+    output [3:0] G
     );
     reg [2:0] chess_board[7:0][7:0];
+    reg [15:0] LED = 0;
     //jie mian
     reg cover0;                  //gamestart
     reg finish;                 //gameover
-    reg [3:0] x;
-    reg [3:0] y;
     wire [5:0] operation;
-    wire if_eliminate;
-    initial begin
-        cover=0;
-        finish=0;
-        x = 0;
-        y = 1;
-    end
-    //鏃堕挓鍒嗭拷
+    integer i,j,k,q;
+    //时钟分?
     wire [31:0]clkdiv;
     wire clk_in_game;
     wire clk_cover;
@@ -57,7 +49,7 @@ module top(
     wire [3:0] new_y; // the new position of the cursor y
     wire if_eliminate; // whether to eliminate
     wire chosen = !if_eliminate; // whether to choose
-    wire fresh = SW[2]; // 鏄惁浜х敓鏂版
+    wire fresh = SW[2]; // 是否产生新棋
     wire refreshed;
     wire eliminated;
     reg ready_to_eliminate;
@@ -68,6 +60,7 @@ module top(
     wire if_generated; // whether the new chess board is generated
     assign clk_in_game = clk & cover0;
     assign clk_cover = clk & (~cover0) & (~finish);
+    reg [7:0] cnt;
     //assign new_board0 = refresh_board;
 //    assign data = new_board0;
     // clock divider
@@ -76,6 +69,20 @@ module top(
         .rst(1'b0),
         .div_res(clkdiv)
     );
+   always @(posedge clkdiv[24]) begin
+        LED = ~LED;
+    end
+    
+    LEDP2S LED_inst(
+        .clk(clk),
+        .start(clkdiv[20]),
+        .par_in(LED),
+        .sclk(LED_clk),
+        .sclrn(LED_clrn),
+        .sout(LED_sout),
+        .EN(LED_EN)
+    );
+    buzzer_driver(.clk(clk), .if_play(!cover0), .beep(buzzer));
     // keyboard input and output of operation
 	PS2 ps2(
         .clk(clk), .rst(1'b0),
@@ -142,18 +149,6 @@ module top(
     Sseg_Dev Sseg_Dev_inst(
         .clk(clk),
         .start(clkdiv[20]),
-        .hexs({0,3'b0,refreshed,3'b0,eliminated,3'b0,if_eliminate,x,y}),
-        .points(8'b0),
-        .LEs(8'b0),
-        .sclk(SD_clk),
-        .sclrn(SD_clrn),
-        .sout(SD_sout),
-        .EN(SD_PEN)
-    );
-
-    Sseg_Dev Sseg_Dev_inst(
-        .clk(clk),
-        .start(clkdiv[20]),
         .hexs({0,x,y}),
         .points(8'b0),
         .LEs(8'b0),
@@ -162,17 +157,13 @@ module top(
         .sout(SD_sout),
         .EN(SD_PEN)
     );
-
-    //chess board
-    //0 for red, 1 for green, 2 for blue, 3 for yellow, 4 for purple, 5 for white
-    reg [2:0] chess_board[7:0][7:0];
-    integer i,j,k;
     initial begin
         cover0 = 0;
         finish = 0;
         x = 4;
         y = 4;
-        score = 0;    
+        score = 0;  
+        cnt = 30;  
 //        reset = 1;
 //        refreshed = 0;
     end
@@ -186,11 +177,14 @@ module top(
     always @(posedge clk) begin
         
         if(if_generated == 1) begin
-            new_board = new_board0;
+            new_board <= new_board0;
+            cnt <= 30;
+            finish <= 0;
 //            if(if_generated == 1) fresh = 0;
         end
         else if(refreshed == 1) begin
-            new_board = refresh_board;
+            new_board <= refresh_board;
+            cnt <= cnt - 1;
         end
 //        else if(eliminated == 1) begin
 //            new_board = eliminate_board;
@@ -201,19 +195,87 @@ module top(
 
     reg [18:0] pic1_addr;
     wire [11:0] pic1;                            //cover's data
+reg [18:0] pic2_addr;
+    wire [11:0] pic2;                           //background's data
+    reg [11:0] st_r_addr;
+    wire [11:0] st_r_data;                      //Red Star's data
+    reg [11:0] st_g_addr;
+    wire [11:0] st_g_data;                      //Green Star's data
+    reg [11:0] st_b_addr;
+    wire [11:0] st_b_data;                      //Blue Star's data
+    reg [11:0] st_y_addr;
+    wire [11:0] st_y_data;                      //Yellow Star's data
+    reg [11:0] st_p_addr;
+    wire [11:0] st_p_data;                      //Purple Star's data
+
     ////////////////// IP CORE  /////////////
     cover cover_inst(
         .clka   (clkdiv[1]),     
         .addra  (pic1_addr),      
         .douta  (pic1)       
     );
+background background_inst(
+        .clka (clkdiv[1]),
+        .addra (pic2_addr),
+        .douta (pic2)
+    );
+    st_r st_r_inst(
+        .clka (clkdiv[1]),
+        .addra (st_r_addr),
+        .douta (st_r_data)
+    );
+    st_g st_g_inst(
+        .clka (clkdiv[1]),
+        .addra (st_g_addr),
+        .douta (st_g_data)
+    );
+    st_b st_b_inst(
+        .clka (clkdiv[1]),
+        .addra (st_b_addr),
+        .douta (st_b_data)
+    );
+    st_y st_y_inst(
+        .clka (clkdiv[1]),
+        .addra (st_y_addr),
+        .douta (st_y_data)
+    );
+    st_p st_p_inst(
+        .clka (clkdiv[1]),
+        .addra (st_p_addr),
+        .douta (st_p_data)
+    );
+    
     ////////////////// IP CORE's INPUT ////////////////
     always @(posedge clk_cover) begin
         pic1_addr <= (col_addr>=0 && col_addr<=639 && row_addr>=0 && row_addr <= 479) ? row_addr * 640 + col_addr:0; 
     end
+
+    always @(posedge clk) begin
+        pic2_addr <= (col_addr>=0 && col_addr<=639 && row_addr>=0 && row_addr <= 479) ? row_addr * 640 + col_addr:0;
+    end
+    
+    always @(posedge clk) begin
+        st_r_addr <= (col_addr>=120 && col_addr<=520 && row_addr>=40 && row_addr <= 439) ? ((row_addr-40) % 50) * 50 + (col_addr-120) % 50 : 0; 
+    end
+
+    always @(posedge clk) begin
+        st_g_addr <= (col_addr>=120 && col_addr<=520 && row_addr>=40 && row_addr <= 439) ? ((row_addr-40) % 50) * 50 + (col_addr-120) % 50 : 0; 
+    end
+
+    always @(posedge clk) begin
+        st_b_addr <= (col_addr>=120 && col_addr<=520 && row_addr>=40 && row_addr <= 439) ? ((row_addr-40) % 50) * 50 + (col_addr-120) % 50 : 0; 
+    end
+
+    always @(posedge clk) begin
+        st_y_addr <= (col_addr>=120 && col_addr<=520 && row_addr>=40 && row_addr <= 439) ? ((row_addr-40) % 50) * 50 + (col_addr-120) % 50 : 0; 
+    end
+
+    always @(posedge clk) begin
+        st_p_addr <= (col_addr>=120 && col_addr<=520 && row_addr>=40 && row_addr <= 439) ? ((row_addr-40) % 50) * 50 + (col_addr-120) % 50 : 0; 
+    end
     
     ///////////////////DISPLAY PART/////////////////////
-    
+    integer mi,mj;
     always @(posedge clk) begin
         if (cover0 == 0) begin
             if (col_addr>=0 && col_addr<=639 && row_addr>=0 && row_addr <= 479)
@@ -223,31 +285,77 @@ module top(
         end
         else begin                              //in game
             if (col_addr < 120 || col_addr > 519 || row_addr < 40 || row_addr > 439)
-                vga_data <= 12'b1111_1111_1111;
+                vga_data <= pic2[11:0];
             else begin
-                i <= (row_addr - 40)/50;
-                j <= (col_addr - 120)/50;
-                //0 for white, 1 for red, 2 for green, 3 for blue, 4 for yellow, 5 for sky blue, 6 for pink 
-                if (new_board[(8 * i + j) * 3 +: 3] == 0) begin
+                mi = (row_addr - 40)/50;
+                mj = (col_addr - 120)/50;
+                if (new_board[(8 * mi + mj) * 3 +: 3] == 0) begin
+                    vga_data <= pic2[11:0];
+                end
+                if (new_board[(8 * mi + mj) * 3 +: 3] == 1) begin
+                    if(st_r_data[11:0]!=12'hfff)begin 
+                        vga_data<=st_r_data[11:0]; 
+                    end
+                    else begin 
+                        if (x == mi && y == mj) begin
                     vga_data <= 12'b1111_1111_1111;
                 end
-                else if (new_board[(8 * i + j) * 3 +: 3] == 1) begin
-                    vga_data <= 12'b0000_0000_1111;
+                else begin
+                            vga_data <= pic2[11:0];
+                        end
+                    end
                 end
-                else if (new_board[(8 * i + j) * 3 +: 3] == 2) begin
-                    vga_data <= 12'b0000_1111_0000;
+                if (new_board[(8 * mi + mj) * 3 +: 3] == 2) begin
+                    if(st_g_data[11:0]!=12'hfff)begin 
+                        vga_data<=st_g_data[11:0];
                 end
-                else if (new_board[(8 * i + j) * 3 +: 3] == 3) begin
-                    vga_data <= 12'b1111_0000_0000;
+                else begin 
+                        if (x == mi && y == mj) begin
+                    vga_data <= 12'b1111_1111_1111;
                 end
-                else if (new_board[(8 * i + j) * 3 +: 3] == 4) begin
-                    vga_data <= 12'b0000_1111_1111;
+                else begin
+                            vga_data <= pic2[11:0];
+                        end
+                    end
                 end
-                else if (new_board[(8 * i + j) * 3 +: 3] == 5) begin
-                    vga_data <= 12'b1111_1111_0000;
+                if (new_board[(8 * mi + mj) * 3 +: 3] == 3) begin
+                    if(st_b_data[11:0]!=12'hfff)begin
+                    vga_data<=st_b_data[11:0];
                 end
-                else if (new_board[(8 * i + j) * 3 +: 3] == 6) begin
-                    vga_data <= 12'b1111_0000_1111;
+                else begin 
+                        if (x == mi && y == mj) begin
+                    vga_data <= 12'b1111_1111_1111;
+                end
+                else begin
+                            vga_data <= pic2[11:0];
+                        end
+                    end
+                end
+                if (new_board[(8 * mi + mj) * 3 +: 3] == 4) begin
+                    if(st_y_data[11:0]!=12'hfff)begin 
+                        vga_data<=st_y_data[11:0]; 
+                    end
+                    else begin 
+                        if (x == mi && y == mj) begin
+                    vga_data <= 12'b1111_1111_1111;
+                end
+                else begin
+                            vga_data <= pic2[11:0];
+                        end
+                    end
+                end
+                if (new_board[(8 * mi + mj) * 3 +: 3] == 5) begin
+                    if(st_p_data[11:0]!=12'hfff)begin 
+                        vga_data<=st_p_data[11:0]; 
+                    end
+                    else begin 
+                        if (x == mi && y == mj) begin
+                    vga_data <= 12'b1111_1111_1111;
+end
+                        else begin
+                            vga_data <= pic2[11:0];
+                        end
+                    end
                 end
             end
         end  
@@ -259,13 +367,16 @@ module top(
             cover0 <= 0;
         end
         else begin
-            cover <= 1;
+            cover0 <= 1;
         end
     end
-    
-    always @(posedge clk) begin
-        x <= x_next;
-        y <= y_next;
-    end
 
+    always @(posedge clk) begin
+        if (cnt == 0) begin
+            finish <= 1;
+        end
+        else begin
+            finish <= 0;
+        end
+    end
 endmodule
